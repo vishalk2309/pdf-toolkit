@@ -52,6 +52,46 @@
   color: var(--accent);
 }
 
+.renameLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 200px;
+}
+
+.renameRow {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.renameInput {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 0.55rem 0.7rem;
+  color: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.ext {
+  padding: 0 0.7rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-left: 1px solid var(--border);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
 .error {
   color: var(--danger);
 }

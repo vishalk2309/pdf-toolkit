@@ -40,9 +40,13 @@ export function useToolSubmit(endpoint) {
     [endpoint]
   )
 
-  const download = useCallback(() => {
-    if (result) downloadBlob(result.blob, result.filename)
-  }, [result])
+  // Optionally override the filename (lets the user rename before saving).
+  const download = useCallback(
+    (overrideName) => {
+      if (result) downloadBlob(result.blob, overrideName || result.filename)
+    },
+    [result]
+  )
 
   const reset = useCallback(() => {
     setStatus('idle')
