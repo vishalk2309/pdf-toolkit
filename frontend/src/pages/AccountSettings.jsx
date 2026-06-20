@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import GoogleButton from '../components/GoogleButton.jsx'
-import styles from './Page.module.css'
+import styles from './AccountSettings.module.css'
 
 const COUNTRIES = [
   'Australia', 'Bangladesh', 'Brazil', 'Canada', 'China', 'France', 'Germany',
@@ -30,22 +30,20 @@ function timezoneList() {
 
 function Message({ ok, text }) {
   if (!text) return null
-  return (
-    <p
-      style={{
-        margin: '0.75rem 0 0',
-        fontSize: '0.88rem',
-        color: ok ? '#0f7a57' : 'var(--danger)',
-      }}
-    >
-      {text}
-    </p>
-  )
+  return <p className={`${styles.msg} ${ok ? styles.msgOk : styles.msgErr}`}>{text}</p>
 }
 
-const sectionTitle = { margin: '0 0 0.25rem', fontSize: '1.1rem' }
-const sectionDesc = { margin: '0 0 1rem', color: 'var(--text-muted)', fontSize: '0.88rem' }
-const cardGap = { marginTop: '1.5rem' }
+function CardHead({ icon, title, desc }) {
+  return (
+    <div className={styles.cardHead}>
+      <div className={styles.cardIcon}>{icon}</div>
+      <div>
+        <h2 className={styles.cardTitle}>{title}</h2>
+        <p className={styles.cardDesc}>{desc}</p>
+      </div>
+    </div>
+  )
+}
 
 export default function AccountSettings() {
   const {
@@ -107,7 +105,6 @@ export default function AccountSettings() {
     setEmailState({ busy: true, msg: '', ok: false })
     try {
       const res = await changeEmail(emailForm.password, emailForm.newEmail)
-      // New email must be verified — send them to the code screen.
       navigate('/verify-email', {
         state: { email: emailForm.newEmail, devCode: res?.dev_code },
       })
@@ -138,20 +135,19 @@ export default function AccountSettings() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
-        <div className={styles.icon}>⚙️</div>
+        <div className={styles.headerIcon}>⚙️</div>
         <h1 className={styles.title}>Account settings</h1>
         <p className={styles.subtitle}>Manage your profile, email and security.</p>
       </header>
 
       {/* --- Details --- */}
       <form className={styles.card} onSubmit={saveDetails}>
-        <h2 style={sectionTitle}>Details</h2>
-        <p style={sectionDesc}>Your name and regional preferences.</p>
+        <CardHead icon="👤" title="Details" desc="Your name and regional preferences." />
 
         <div className={styles.field}>
           <label className={styles.label}>Name</label>
           <input
-            className={styles.select}
+            className={styles.input}
             type="text"
             value={details.name}
             onChange={(e) => setDetails({ ...details, name: e.target.value })}
@@ -159,32 +155,34 @@ export default function AccountSettings() {
           />
         </div>
 
-        <div className={styles.field}>
-          <label className={styles.label}>Country</label>
-          <select
-            className={styles.select}
-            value={details.country}
-            onChange={(e) => setDetails({ ...details, country: e.target.value })}
-          >
-            <option value="">— Select —</option>
-            {COUNTRIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label className={styles.label}>Country</label>
+            <select
+              className={styles.input}
+              value={details.country}
+              onChange={(e) => setDetails({ ...details, country: e.target.value })}
+            >
+              <option value="">— Select —</option>
+              {COUNTRIES.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
 
-        <div className={styles.field}>
-          <label className={styles.label}>Timezone</label>
-          <select
-            className={styles.select}
-            value={details.timezone}
-            onChange={(e) => setDetails({ ...details, timezone: e.target.value })}
-          >
-            <option value="">— Select —</option>
-            {tzList.map((tz) => (
-              <option key={tz} value={tz}>{tz}</option>
-            ))}
-          </select>
+          <div className={styles.field}>
+            <label className={styles.label}>Timezone</label>
+            <select
+              className={styles.input}
+              value={details.timezone}
+              onChange={(e) => setDetails({ ...details, timezone: e.target.value })}
+            >
+              <option value="">— Select —</option>
+              {tzList.map((tz) => (
+                <option key={tz} value={tz}>{tz}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className={styles.actions}>
@@ -196,17 +194,17 @@ export default function AccountSettings() {
       </form>
 
       {/* --- Email --- */}
-      <form className={styles.card} style={cardGap} onSubmit={saveEmail}>
-        <h2 style={sectionTitle}>Email</h2>
-        <p style={sectionDesc}>
-          Current: <strong>{user.email}</strong>. Changing it requires verifying
-          the new address.
-        </p>
+      <form className={styles.card} onSubmit={saveEmail}>
+        <CardHead
+          icon="✉️"
+          title="Email"
+          desc={`Current: ${user.email}. Changing it requires verifying the new address.`}
+        />
 
         <div className={styles.field}>
           <label className={styles.label}>New email</label>
           <input
-            className={styles.select}
+            className={styles.input}
             type="email"
             value={emailForm.newEmail}
             onChange={(e) => setEmailForm({ ...emailForm, newEmail: e.target.value })}
@@ -217,7 +215,7 @@ export default function AccountSettings() {
         <div className={styles.field}>
           <label className={styles.label}>Current password</label>
           <input
-            className={styles.select}
+            className={styles.input}
             type="password"
             value={emailForm.password}
             onChange={(e) => setEmailForm({ ...emailForm, password: e.target.value })}
@@ -235,36 +233,43 @@ export default function AccountSettings() {
       </form>
 
       {/* --- Password --- */}
-      <form className={styles.card} style={cardGap} onSubmit={savePassword}>
-        <h2 style={sectionTitle}>Password</h2>
-        <p style={sectionDesc}>
-          Choose a strong password. (Signed up with Google only? Use{' '}
-          <Link to="/forgot-password">forgot password</Link> to set one first.)
-        </p>
+      <form className={styles.card} onSubmit={savePassword}>
+        <CardHead
+          icon="🔒"
+          title="Password"
+          desc="Choose a strong password to keep your account secure."
+        />
 
-        <div className={styles.field}>
-          <label className={styles.label}>Current password</label>
-          <input
-            className={styles.select}
-            type="password"
-            value={pwd.current}
-            onChange={(e) => setPwd({ ...pwd, current: e.target.value })}
-            autoComplete="current-password"
-            required
-          />
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label className={styles.label}>Current password</label>
+            <input
+              className={styles.input}
+              type="password"
+              value={pwd.current}
+              onChange={(e) => setPwd({ ...pwd, current: e.target.value })}
+              autoComplete="current-password"
+              required
+            />
+          </div>
+          <div className={styles.field}>
+            <label className={styles.label}>New password</label>
+            <input
+              className={styles.input}
+              type="password"
+              value={pwd.next}
+              onChange={(e) => setPwd({ ...pwd, next: e.target.value })}
+              placeholder="At least 8 characters"
+              autoComplete="new-password"
+              required
+            />
+          </div>
         </div>
-        <div className={styles.field}>
-          <label className={styles.label}>New password</label>
-          <input
-            className={styles.select}
-            type="password"
-            value={pwd.next}
-            onChange={(e) => setPwd({ ...pwd, next: e.target.value })}
-            placeholder="At least 8 characters"
-            autoComplete="new-password"
-            required
-          />
-        </div>
+
+        <p className={styles.cardDesc} style={{ marginBottom: '0.75rem' }}>
+          Signed up with Google only? Use{' '}
+          <Link to="/forgot-password">forgot password</Link> to set one first.
+        </p>
 
         <div className={styles.actions}>
           <button type="submit" className="btn" disabled={pwdState.busy}>
@@ -275,14 +280,25 @@ export default function AccountSettings() {
       </form>
 
       {/* --- Linked accounts --- */}
-      <div className={styles.card} style={cardGap}>
-        <h2 style={sectionTitle}>Linked accounts</h2>
-        <p style={sectionDesc}>Connect a social account for quick sign-in.</p>
+      <div className={styles.card}>
+        <CardHead
+          icon="🔗"
+          title="Linked accounts"
+          desc="Connect a social account for quick sign-in."
+        />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-          <span style={{ fontWeight: 600 }}>
-            Google: {user.google_linked ? '✅ Connected' : 'Not connected'}
-          </span>
+        <div className={styles.linkedRow}>
+          <div className={styles.provider}>
+            <span className={styles.providerIcon}>🇬</span>
+            <span className={styles.providerName}>Google</span>
+            <span
+              className={`${styles.badge} ${
+                user.google_linked ? styles.badgeOn : styles.badgeOff
+              }`}
+            >
+              {user.google_linked ? 'Connected' : 'Not linked'}
+            </span>
+          </div>
           {user.google_linked ? (
             <button type="button" className="btn btn-ghost" onClick={onUnlinkGoogle}>
               Disconnect
@@ -294,9 +310,15 @@ export default function AccountSettings() {
             />
           )}
         </div>
-        <p style={sectionDesc}>
-          Facebook: <em>coming soon</em>
-        </p>
+
+        <div className={styles.linkedRow}>
+          <div className={styles.provider}>
+            <span className={styles.providerIcon}>📘</span>
+            <span className={styles.providerName}>Facebook</span>
+            <span className={`${styles.badge} ${styles.badgeOff}`}>Coming soon</span>
+          </div>
+        </div>
+
         <Message ok={linkState.ok} text={linkState.msg} />
       </div>
     </div>
