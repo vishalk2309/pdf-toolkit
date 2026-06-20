@@ -529,3 +529,13 @@ def unlink_google():
     g.current_user.google_linked = False
     db.session.commit()
     return jsonify(user=g.current_user.to_dict())
+
+
+@auth_bp.route("/account", methods=["DELETE"])
+@token_required
+@limiter.limit("5 per minute")
+def delete_account():
+    """Permanently delete the logged-in user's account."""
+    db.session.delete(g.current_user)
+    db.session.commit()
+    return jsonify(message="Your account has been deleted.")

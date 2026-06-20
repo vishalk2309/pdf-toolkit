@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.jsx'
 import BgShapes from './components/BgShapes.jsx'
 import Footer from './components/Footer.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
+import RouteMeta from './components/RouteMeta.jsx'
 import ConversionTool from './components/ConversionTool.jsx'
 import { conversionTools } from './toolsConfig.js'
 import Home from './pages/Home.jsx'
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
+      <RouteMeta />
       <BgShapes />
       <Navbar />
       <main className="app-main">

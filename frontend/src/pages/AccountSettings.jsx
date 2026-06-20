@@ -48,9 +48,13 @@ function CardHead({ icon, title, desc }) {
 export default function AccountSettings() {
   const {
     user, updateProfile, changePassword, changeEmail, linkGoogle, unlinkGoogle,
+    deleteAccount,
   } = useAuth()
   const navigate = useNavigate()
   const tzList = useMemo(timezoneList, [])
+
+  const [confirmDelete, setConfirmDelete] = useState('')
+  const [delState, setDelState] = useState({ busy: false, msg: '' })
 
   const [details, setDetails] = useState({
     name: user?.name || '',
@@ -129,6 +133,16 @@ export default function AccountSettings() {
       setLinkState({ msg: 'Google account unlinked.', ok: true })
     } catch (err) {
       setLinkState({ msg: err.message, ok: false })
+    }
+  }
+
+  const onDeleteAccount = async () => {
+    setDelState({ busy: true, msg: '' })
+    try {
+      await deleteAccount()
+      navigate('/', { replace: true })
+    } catch (err) {
+      setDelState({ busy: false, msg: err.message })
     }
   }
 
@@ -320,6 +334,37 @@ export default function AccountSettings() {
         </div>
 
         <Message ok={linkState.ok} text={linkState.msg} />
+      </div>
+
+      {/* --- Danger zone --- */}
+      <div className={styles.card} style={{ borderColor: 'var(--danger)' }}>
+        <CardHead
+          icon="⚠️"
+          title="Delete account"
+          desc="Permanently delete your account and data. This cannot be undone."
+        />
+        <div className={styles.field}>
+          <label className={styles.label}>
+            Type <strong>DELETE</strong> to confirm
+          </label>
+          <input
+            className={styles.input}
+            type="text"
+            value={confirmDelete}
+            onChange={(e) => setConfirmDelete(e.target.value)}
+            placeholder="DELETE"
+          />
+        </div>
+        <button
+          type="button"
+          className="btn"
+          style={{ background: 'var(--danger)', color: '#fff' }}
+          disabled={confirmDelete !== 'DELETE' || delState.busy}
+          onClick={onDeleteAccount}
+        >
+          {delState.busy ? 'Deleting…' : 'Delete my account'}
+        </button>
+        <Message ok={false} text={delState.msg} />
       </div>
     </div>
   )

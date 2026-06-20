@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getJson, postJson } from '../utils/api.js'
+import { deleteJson, getJson, postJson } from '../utils/api.js'
 
 const TOKEN_KEY = 'pdfvish_token'
 const AuthContext = createContext(null)
@@ -102,6 +102,11 @@ export function AuthProvider({ children }) {
     return u
   }
 
+  const deleteAccount = async () => {
+    await deleteJson('/auth/account', token)
+    logout()
+  }
+
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY)
     setToken(null)
@@ -129,6 +134,7 @@ export function AuthProvider({ children }) {
     changeEmail,
     linkGoogle,
     unlinkGoogle,
+    deleteAccount,
     logout,
     forgotPassword,
     resetPassword,

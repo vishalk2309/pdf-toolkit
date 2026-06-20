@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Don't index account / auth pages
+Disallow: /account
+Disallow: /login
+Disallow: /signup
+Disallow: /verify-email
+Disallow: /forgot-password
+Disallow: /reset-password
+
+Sitemap: https://pdfvish.onrender.com/sitemap.xml

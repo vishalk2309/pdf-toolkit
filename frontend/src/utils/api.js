@@ -79,6 +79,22 @@ export async function postJson(endpoint, body, token) {
   return data
 }
 
+/** DELETE an endpoint with an optional Bearer token; returns parsed JSON. */
+export async function deleteJson(endpoint, token) {
+  const headers = {}
+  if (token) headers.Authorization = `Bearer ${token}`
+
+  const res = await fetch(`${API_BASE}${endpoint}`, { method: 'DELETE', headers })
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    const err = new Error(data?.error || `Request failed (${res.status})`)
+    err.status = res.status
+    err.data = data
+    throw err
+  }
+  return data
+}
+
 /** GET JSON from an endpoint with an optional Bearer token. */
 export async function getJson(endpoint, token) {
   const headers = {}
