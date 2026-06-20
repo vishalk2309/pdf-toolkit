@@ -1,32 +1,78 @@
-"""Transactional email via Resend (https://resend.com).
+"""Transactional email for PDFVish.
 
-Uses only the standard library (urllib) so there is no extra dependency. The
-API key and sender are read from the environment:
+Two backends, tried in order — both use only the standard library (no extra
+dependency):
 
-    RESEND_API_KEY  -> your Resend API key (required to actually send)
-    MAIL_FROM       -> sender, e.g. "PDFVish <noreply@yourdomain.com>".
-                       Defaults to Resend's shared test sender.
+  1. SMTP (e.g. Gmail) — used when SMTP_USER and SMTP_PASS are set.
+       SMTP_HOST   default "smtp.gmail.com"
+       SMTP_PORT   default 465 (implicit SSL); use 587 for STARTTLS
+       SMTP_USER   the full email address to log in / send from
+       SMTP_PASS   an app password (Gmail: create one under Google Account ->
+                   Security -> App passwords; your normal password won't work)
+       MAIL_FROM   optional display sender; defaults to SMTP_USER
 
-send_email() returns True on success and False if email isn't configured or the
-send fails — callers can then fall back to dev behaviour (showing the code).
+  2. Resend API — used when RESEND_API_KEY is set (and SMTP isn't).
+       RESEND_API_KEY, MAIL_FROM
+
+send_email() returns True on success and False if no backend is configured or
+the send fails, so callers can fall back to dev behaviour (showing the code).
 """
 
 import json
 import os
+import smtplib
+import ssl
 import urllib.error
 import urllib.request
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 RESEND_ENDPOINT = "https://api.resend.com/emails"
 DEFAULT_SENDER = "PDFVish <onboarding@resend.dev>"
 
 
+def _smtp_configured():
+    return bool(os.environ.get("SMTP_USER") and os.environ.get("SMTP_PASS"))
+
+
 def email_configured():
-    """True if a Resend API key is present."""
-    return bool(os.environ.get("RESEND_API_KEY"))
+    """True if any email backend (SMTP or Resend) is configured."""
+    return _smtp_configured() or bool(os.environ.get("RESEND_API_KEY"))
 
 
-def send_email(to_address, subject, html):
-    """Send one HTML email. Returns True if Resend accepted it."""
+def _send_via_smtp(to_address, subject, html):
+    """Send through an SMTP server (Gmail by default). Returns True on success."""
+    host = os.environ.get("SMTP_HOST", "smtp.gmail.com")
+    port = int(os.environ.get("SMTP_PORT", "465"))
+    user = os.environ["SMTP_USER"]
+    password = os.environ["SMTP_PASS"]
+    sender = os.environ.get("MAIL_FROM") or user
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = sender
+    msg["To"] = to_address
+    msg.attach(MIMEText(html, "html"))
+
+    try:
+        if port == 465:
+            context = ssl.create_default_context()
+            with smtplib.SMTP_SSL(host, port, context=context, timeout=20) as server:
+                server.login(user, password)
+                server.sendmail(user, [to_address], msg.as_string())
+        else:
+            with smtplib.SMTP(host, port, timeout=20) as server:
+                server.starttls(context=ssl.create_default_context())
+                server.login(user, password)
+                server.sendmail(user, [to_address], msg.as_string())
+        return True
+    except (smtplib.SMTPException, OSError) as exc:
+        print(f"[auth] SMTP send failed: {exc}")
+        return False
+
+
+def _send_via_resend(to_address, subject, html):
+    """Send through the Resend API. Returns True on success."""
     api_key = os.environ.get("RESEND_API_KEY")
     if not api_key:
         return False
@@ -55,6 +101,15 @@ def send_email(to_address, subject, html):
     except urllib.error.URLError as exc:
         print(f"[auth] Could not reach Resend: {exc}")
         return False
+
+
+def send_email(to_address, subject, html):
+    """Send one HTML email via the first configured backend. Returns True if sent."""
+    if _smtp_configured():
+        return _send_via_smtp(to_address, subject, html)
+    if os.environ.get("RESEND_API_KEY"):
+        return _send_via_resend(to_address, subject, html)
+    return False
 
 
 def verification_email_html(name, code):
