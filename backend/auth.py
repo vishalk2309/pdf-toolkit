@@ -21,7 +21,12 @@ from flask import Blueprint, current_app, g, jsonify, request
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from models import User, db
-from utils.mailer import email_configured, send_email, verification_email_html
+from utils.mailer import (
+    email_configured,
+    reset_email_html,
+    send_email,
+    verification_email_html,
+)
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
@@ -231,10 +236,20 @@ def forgot_password():
     user = User.query.filter_by(email=email).first()
     if user:
         token = _make_reset_token(user)
-        reset_link = f"/reset-password?token={token}"
-        print(f"[auth] Password reset link for {email}: {reset_link}")
-        if current_app.config.get("AUTH_DEV_MODE"):
-            # DEV ONLY — remove once real email delivery is wired up.
+        # Absolute URL so the link works from an email. Prefer APP_BASE_URL
+        # (e.g. https://pdfvish.onrender.com); fall back to the request host.
+        base = (os.environ.get("APP_BASE_URL") or request.host_url).rstrip("/")
+        reset_link = f"{base}/reset-password?token={token}"
+
+        sent = send_email(
+            user.email,
+            "Reset your PDFVish password",
+            reset_email_html(user.name, reset_link),
+        )
+        if not sent:
+            print(f"[auth] Password reset link for {email}: {reset_link}")
+        # DEV ONLY: surface the link when email delivery isn't configured.
+        if not sent and current_app.config.get("AUTH_DEV_MODE"):
             resp["dev_reset_link"] = reset_link
 
     return jsonify(resp)

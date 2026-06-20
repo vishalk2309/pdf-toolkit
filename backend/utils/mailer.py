@@ -171,6 +171,26 @@ def send_email(to_address, subject, html):
     return False
 
 
+def reset_email_html(name, link):
+    """Build the password-reset email body containing a reset link."""
+    safe_name = (name or "there").strip()
+    return f"""\
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:auto">
+      <h2 style="color:#111">Reset your password</h2>
+      <p>Hi {safe_name}, we received a request to reset your PDFVish password.
+         Click the button below to choose a new one:</p>
+      <p style="text-align:center;margin:24px 0">
+        <a href="{link}" style="background:#4b5563;color:#fff;text-decoration:none;
+           padding:12px 24px;border-radius:8px;display:inline-block">
+          Reset password
+        </a>
+      </p>
+      <p style="color:#6b7280">This link expires in 30 minutes. If you didn't
+         request this, you can safely ignore this email — your password won't
+         change.</p>
+    </div>"""
+
+
 def verification_email_html(name, code):
     """Build the verification email body for a 6-digit code."""
     safe_name = (name or "there").strip()
