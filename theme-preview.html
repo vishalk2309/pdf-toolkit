@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PDFVish — Theme Preview</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #e9ebef;
+    color: #1f2430;
+    padding: 24px;
+  }
+  h1 { text-align: center; margin: 0 0 4px; }
+  .lead { text-align: center; color: #5b616e; margin: 0 0 28px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 22px;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+
+  /* One theme demo card */
+  .demo {
+    background: var(--bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    border: 1px solid var(--border);
+  }
+  .demoTitle {
+    font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    padding: 8px 14px; color: #fff; background: var(--primary);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .swatches { display: flex; gap: 5px; }
+  .sw { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); }
+
+  /* Mock app */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--text); }
+  .logo {
+    width: 28px; height: 28px; border-radius: 8px; background: var(--primary);
+    color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800;
+  }
+  .accentText { color: var(--text-muted); }
+  .navBtns { display: flex; gap: 8px; }
+  .btn {
+    border: none; border-radius: 9px; padding: 7px 14px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btnPrimary { background: var(--primary); color: #fff; }
+  .btnGhost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+
+  .body { padding: 22px 18px 24px; background: var(--bg); }
+  .hero { text-align: center; margin-bottom: 20px; }
+  .hero h2 { margin: 0 0 6px; font-size: 22px; letter-spacing: -.02em; color: var(--text); }
+  .hero h2 .grad {
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { margin: 0; color: var(--text-muted); font-size: 13px; }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 12px 10px; text-align: center;
+  }
+  .card .ic { font-size: 20px; }
+  .card .nm { font-size: 12px; font-weight: 700; color: var(--text); margin-top: 4px; }
+
+  .ctaRow { display: flex; gap: 10px; justify-content: center; }
+  .pillRow { display: flex; gap: 6px; justify-content: center; margin-top: 14px; flex-wrap: wrap; }
+  .pill { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--bg-elevated); color: var(--text-muted); border: 1px solid var(--border); }
+  .pillOn { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  code { background: #fff; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .note { max-width: 760px; margin: 26px auto 0; text-align: center; color: #5b616e; font-size: 13px; line-height: 1.6; }
+</style>
+</head>
+<body>
+  <h1>PDFVish — Theme Preview</h1>
+  <p class="lead">Same UI, five color themes. Pick one and I’ll apply it to your real <code>:root</code> variables.</p>
+
+  <div class="grid">
+
+    <!-- 1. Current: Slate -->
+    <div class="demo" style="
+      --bg:#ffffff; --bg-elevated:#f7f8fa; --surface:#eef0f3; --border:#d7dade;
+      --text:#2b2f36; --text-muted:#6e7480; --primary:#4b5563; --accent:#6b7280;">
+      <div class="demoTitle">1 · Slate (current)
+        <span class="swatches"><span class="sw" style="background:#4b5563"></span><span class="sw" style="background:#6b7280"></span><span class="sw" style="background:#eef0f3"></span></span>
+      </div>
+      <div class="nav"><div class="brand"><span class="logo">PV</span>PDF<span class="accentText">Vish</span></div>
+        <div class="navBtns"><button class="btn btnGhost">Log in</button><button class="btn btnPrimary">Sign up</button></div></div>
+      <div class="body">
+        <div class="hero"><h2>Every PDF tool you need <span class="grad">in one place</span></h2><p>Convert, organize, edit and secure your PDFs — free.</p></div>
+        <div class="cards"><div class="card"><div class="ic">🔗</div><div class="nm">Merge</div></div><div class="card"><div class="ic">✂️</div><div class="nm">Split</div></div><div class="card"><div class="ic">🗜️</div><div class="nm">Compress</div></div></div>
+        <div class="ctaRow"><button class="btn btnPrimary">Choose files</button><button class="btn btnGhost">Learn more</button></div>
+        <div class="pillRow"><span class="pill pillOn">Free</span><span class="pill">No watermarks</span><span class="pill">Secure</span></div>
+      </div>
+    </div>
+
+    <!-- 2. Ocean Blue -->
+    <div class="demo" style="
+      --bg:#ffffff; --bg-elevated:#f5f8ff; --surface:#eef4ff; --border:#d6e0f5;
+      --text:#1e293b; --text-muted:#64748b; --primary:#2563eb; --accent:#0ea5e9;">
+      <div class="demoTitle">2 · Ocean Blue
+        <span class="swatches"><span class="sw" style="background:#2563eb"></span><span class="sw" style="background:#0ea5e9"></span><span class="sw" style="background:#eef4ff"></span></span>
+      </div>
+      <div class="nav"><div class="brand"><span class="logo">PV</span>PDF<span class="accentText">Vish</span></div>
+        <div class="navBtns"><button class="btn btnGhost">Log in</button><button class="btn btnPrimary">Sign up</button></div></div>
+      <div class="body">
+        <div class="hero"><h2>Every PDF tool you need <span class="grad">in one place</span></h2><p>Convert, organize, edit and secure your PDFs — free.</p></div>
+        <div class="cards"><div class="card"><div class="ic">🔗</div><div class="nm">Merge</div></div><div class="card"><div class="ic">✂️</div><div class="nm">Split</div></div><div class="card"><div class="ic">🗜️</div><div class="nm">Compress</div></div></div>
+        <div class="ctaRow"><button class="btn btnPrimary">Choose files</button><button class="btn btnGhost">Learn more</button></div>
+        <div class="pillRow"><span class="pill pillOn">Free</span><span class="pill">No watermarks</span><span class="pill">Secure</span></div>
+      </div>
+    </div>
+
+    <!-- 3. Crimson -->
+    <div class="demo" style="
+      --bg:#ffffff; --bg-elevated:#fff6f5; --surface:#ffeceb; --border:#f3d4d2;
+      --text:#2b2f36; --text-muted:#6e7480; --primary:#e5322d; --accent:#fb7185;">
+      <div class="demoTitle">3 · Crimson (iLovePDF-style)
+        <span class="swatches"><span class="sw" style="background:#e5322d"></span><span class="sw" style="background:#fb7185"></span><span class="sw" style="background:#ffeceb"></span></span>
+      </div>
+      <div class="nav"><div class="brand"><span class="logo">PV</span>PDF<span class="accentText">Vish</span></div>
+        <div class="navBtns"><button class="btn btnGhost">Log in</button><button class="btn btnPrimary">Sign up</button></div></div>
+      <div class="body">
+        <div class="hero"><h2>Every PDF tool you need <span class="grad">in one place</span></h2><p>Convert, organize, edit and secure your PDFs — free.</p></div>
+        <div class="cards"><div class="card"><div class="ic">🔗</div><div class="nm">Merge</div></div><div class="card"><div class="ic">✂️</div><div class="nm">Split</div></div><div class="card"><div class="ic">🗜️</div><div class="nm">Compress</div></div></div>
+        <div class="ctaRow"><button class="btn btnPrimary">Choose files</button><button class="btn btnGhost">Learn more</button></div>
+        <div class="pillRow"><span class="pill pillOn">Free</span><span class="pill">No watermarks</span><span class="pill">Secure</span></div>
+      </div>
+    </div>
+
+    <!-- 4. Emerald -->
+    <div class="demo" style="
+      --bg:#ffffff; --bg-elevated:#f3fbf8; --surface:#e7f6f1; --border:#cde9e1;
+      --text:#1f2937; --text-muted:#6b7280; --primary:#0d9488; --accent:#10b981;">
+      <div class="demoTitle">4 · Emerald Teal
+        <span class="swatches"><span class="sw" style="background:#0d9488"></span><span class="sw" style="background:#10b981"></span><span class="sw" style="background:#e7f6f1"></span></span>
+      </div>
+      <div class="nav"><div class="brand"><span class="logo">PV</span>PDF<span class="accentText">Vish</span></div>
+        <div class="navBtns"><button class="btn btnGhost">Log in</button><button class="btn btnPrimary">Sign up</button></div></div>
+      <div class="body">
+        <div class="hero"><h2>Every PDF tool you need <span class="grad">in one place</span></h2><p>Convert, organize, edit and secure your PDFs — free.</p></div>
+        <div class="cards"><div class="card"><div class="ic">🔗</div><div class="nm">Merge</div></div><div class="card"><div class="ic">✂️</div><div class="nm">Split</div></div><div class="card"><div class="ic">🗜️</div><div class="nm">Compress</div></div></div>
+        <div class="ctaRow"><button class="btn btnPrimary">Choose files</button><button class="btn btnGhost">Learn more</button></div>
+        <div class="pillRow"><span class="pill pillOn">Free</span><span class="pill">No watermarks</span><span class="pill">Secure</span></div>
+      </div>
+    </div>
+
+    <!-- 5. Indigo -->
+    <div class="demo" style="
+      --bg:#ffffff; --bg-elevated:#f7f7ff; --surface:#eef0ff; --border:#dcdcf5;
+      --text:#1e1b3a; --text-muted:#6b7280; --primary:#6366f1; --accent:#8b5cf6;">
+      <div class="demoTitle">5 · Indigo (modern SaaS)
+        <span class="swatches"><span class="sw" style="background:#6366f1"></span><span class="sw" style="background:#8b5cf6"></span><span class="sw" style="background:#eef0ff"></span></span>
+      </div>
+      <div class="nav"><div class="brand"><span class="logo">PV</span>PDF<span class="accentText">Vish</span></div>
+        <div class="navBtns"><button class="btn btnGhost">Log in</button><button class="btn btnPrimary">Sign up</button></div></div>
+      <div class="body">
+        <div class="hero"><h2>Every PDF tool you need <span class="grad">in one place</span></h2><p>Convert, organize, edit and secure your PDFs — free.</p></div>
+        <div class="cards"><div class="card"><div class="ic">🔗</div><div class="nm">Merge</div></div><div class="card"><div class="ic">✂️</div><div class="nm">Split</div></div><div class="card"><div class="ic">🗜️</div><div class="nm">Compress</div></div></div>
+        <div class="ctaRow"><button class="btn btnPrimary">Choose files</button><button class="btn btnGhost">Learn more</button></div>
+        <div class="pillRow"><span class="pill pillOn">Free</span><span class="pill">No watermarks</span><span class="pill">Secure</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="note">
+    These are real colors rendered in a mini mockup of your site — opening this file changes nothing on your live app.
+    When you pick a favorite (e.g. “apply Ocean Blue”), I’ll swap the matching values into
+    <code>frontend/src/index.css</code> and your whole site updates automatically.
+  </p>
+</body>
+</html>
