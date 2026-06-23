@@ -55,7 +55,7 @@
   align-items: center;
   justify-content: space-between;
   flex: 1;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 /* Hamburger — hidden on desktop, shown on mobile via the media query. */
@@ -77,21 +77,23 @@
 .links {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  flex-wrap: wrap;
+  gap: 0.15rem;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 }
 
 .link {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.5rem 0.85rem;
+  padding: 0.5rem 0.7rem;
   border-radius: 8px;
   color: var(--text-muted);
   font-weight: 600;
   font-size: 0.82rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
   font-family: inherit;
   background: none;
   border: none;
@@ -263,7 +265,7 @@
   display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   /* On mobile, move the install button to the main bar instead of the menu. */
   .installDesktop {
     display: none;
@@ -390,7 +392,7 @@
 }
 
 /* ---- Mobile: hamburger menu (≤ 900px) ---- */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .burger {
     display: inline-flex;
   }
