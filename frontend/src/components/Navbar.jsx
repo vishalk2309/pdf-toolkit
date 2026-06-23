@@ -97,15 +97,21 @@ export default function Navbar() {
           PDF<span className={styles.accent}>Vish</span>
         </Link>
 
-        <button
-          type="button"
-          className={styles.burger}
-          aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-        >
-          {mobileOpen ? '✕' : '☰'}
-        </button>
+        <div className={styles.barRight}>
+          {/* Install button on the always-visible bar (mobile only). */}
+          <span className={styles.installMobile}>
+            <InstallButton className={styles.install} />
+          </span>
+          <button
+            type="button"
+            className={styles.burger}
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            {mobileOpen ? '✕' : '☰'}
+          </button>
+        </div>
 
         <div
           className={`${styles.collapse} ${mobileOpen ? styles.collapseOpen : ''}`}
@@ -162,7 +168,9 @@ export default function Navbar() {
           </nav>
 
           <div className={styles.auth}>
-            <InstallButton className={styles.install} />
+            <span className={styles.installDesktop}>
+              <InstallButton className={styles.install} />
+            </span>
             {/* While the stored token is being validated, show neither state —
                 otherwise a logged-in user sees a flash of Login/Signup on every
                 page refresh until /auth/me resolves. */}

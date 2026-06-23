@@ -246,6 +246,34 @@
   color: #fff;
 }
 
+/* Right-side group on the always-visible bar (holds mobile install + burger). */
+.barRight {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Show the install button in the desktop auth area; hide its mobile copy. */
+.installDesktop {
+  display: inline-flex;
+  align-items: center;
+}
+
+.installMobile {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  /* On mobile, move the install button to the main bar instead of the menu. */
+  .installDesktop {
+    display: none;
+  }
+  .installMobile {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
 /* ---- User avatar + account dropdown ---- */
 .avatar {
   width: 40px;
