@@ -223,6 +223,29 @@
   white-space: nowrap;
 }
 
+/* ---- Install (PWA) button ---- */
+.install {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+
+.install:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
 /* ---- User avatar + account dropdown ---- */
 .avatar {
   width: 40px;

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { CATEGORIES, tools } from '../toolsConfig.js'
 import { useAuth } from '../context/AuthContext.jsx'
+import InstallButton from './InstallButton.jsx'
 import styles from './Navbar.module.css'
 
 // Tools surfaced directly in the navbar for quick access.
@@ -161,6 +162,7 @@ export default function Navbar() {
           </nav>
 
           <div className={styles.auth}>
+            <InstallButton className={styles.install} />
             {/* While the stored token is being validated, show neither state —
                 otherwise a logged-in user sees a flash of Login/Signup on every
                 page refresh until /auth/me resolves. */}
