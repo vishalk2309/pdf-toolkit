@@ -161,6 +161,14 @@ export const tools = [
     outName: "images.pdf",
     category: "Convert to PDF",
   },
+  {
+    kind: "custom",
+    path: "/excalidraw-to-pdf",
+    icon: "🎨",
+    title: "Excalidraw → PDF",
+    description: "Convert an Excalidraw drawing (.excalidraw) into a PDF.",
+    category: "Convert to PDF",
+  },
 
   // ---- Optimize & Secure ----
   {

@@ -14,6 +14,7 @@ import Protect from './pages/Protect.jsx'
 import Edit from './pages/Edit.jsx'
 import Annotate from './pages/Annotate.jsx'
 import Sign from './pages/Sign.jsx'
+import ExcalidrawToPdf from './pages/ExcalidrawToPdf.jsx'
 import FAQ from './pages/FAQ.jsx'
 import Features from './pages/Features.jsx'
 import About from './pages/About.jsx'
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/edit" element={<Edit />} />
           <Route path="/annotate" element={<Annotate />} />
           <Route path="/sign" element={<Sign />} />
+          <Route path="/excalidraw-to-pdf" element={<ExcalidrawToPdf />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/features" element={<Features />} />
           <Route path="/about" element={<About />} />
